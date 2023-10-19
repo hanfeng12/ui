@@ -5,6 +5,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.io.IOException;
+
 
 public class UserManager {
     private static final String FILE_PATH = "src/main/resources/accounts.txt";
@@ -12,6 +19,8 @@ public class UserManager {
     private boolean checkLogin;
 
     private boolean AdmincheckLogin;
+
+    private String latestRegisteredUsername;
 
 
     public boolean getCheckLogin(){
@@ -77,6 +86,8 @@ public class UserManager {
 
         System.out.println("Enter username: ");
         String username = scanner.nextLine();
+        latestRegisteredUsername = username;
+        createUserDirectories(username);
 
         System.out.println("Enter password: ");
         String passwd = scanner.nextLine();
@@ -242,6 +253,20 @@ public class UserManager {
 
     public boolean getAdminCheckLogin(){
         return AdmincheckLogin;
+    }
+
+    private void createUserDirectories(String username) {
+        try {
+            Files.createDirectories(Paths.get("src/main/resources/" + username + "/library"));
+            Files.createDirectories(Paths.get("src/main/resources/" + username + "/download"));
+            Files.createDirectories(Paths.get("src/main/resources/" + username + "/upload"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getLatestRegisteredUsername() {
+        return latestRegisteredUsername;
     }
 
 }
