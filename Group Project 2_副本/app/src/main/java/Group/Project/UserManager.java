@@ -67,6 +67,7 @@ public class UserManager {
 
     public void register() {
         Scanner scanner = new Scanner(System.in);
+        createSharedLibraryDirectory();
 
         System.out.println("Enter phone number: ");
         String phoneNum = scanner.nextLine();
@@ -87,7 +88,6 @@ public class UserManager {
         System.out.println("Enter username: ");
         String username = scanner.nextLine();
         latestRegisteredUsername = username;
-        createUserDirectories(username);
 
         System.out.println("Enter password: ");
         String passwd = scanner.nextLine();
@@ -255,18 +255,19 @@ public class UserManager {
         return AdmincheckLogin;
     }
 
-    private void createUserDirectories(String username) {
-        try {
-            Files.createDirectories(Paths.get("src/main/resources/" + username + "/library"));
-            Files.createDirectories(Paths.get("src/main/resources/" + username + "/download"));
-            Files.createDirectories(Paths.get("src/main/resources/" + username + "/upload"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public String getLatestRegisteredUsername() {
         return latestRegisteredUsername;
+    }
+
+    private void createSharedLibraryDirectory() {
+        try {
+            // 创建一个共享的library目录
+            Files.createDirectories(Paths.get("src/main/resources/library"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
